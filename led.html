@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>5분마다 깜빡이는 화면</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: black;
+            color: white;
+            font-size: 5rem;
+            font-weight: bold;
+            transition: background-color 0.2s;
+        }
+    </style>
+</head>
+<body>
+<div id="timer">05:00</div>
+<script>
+    let timeLeft = 300;
+    const timerElement = document.getElementById("timer");
+
+    function updateTimer() {
+        let minutes = Math.floor(timeLeft / 60);
+        let seconds = timeLeft % 60;
+        timerElement.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        timeLeft--;
+        if (timeLeft < 0) {
+            blinkScreen();
+            timeLeft = 300; // 5분 초기화
+        }
+    }
+
+    function blinkScreen(count = 5) {
+        let blinkCount = 0;
+        const interval = setInterval(() => {
+            document.body.style.backgroundColor = (blinkCount % 2 === 0) ? "red" : "black";
+            blinkCount++;
+            if (blinkCount >= count * 2) {
+                clearInterval(interval);
+                document.body.style.backgroundColor = "black"; // 원래 색으로 복구
+            }
+        }, 500); // 0.5초마다 깜빡이기
+    }
+
+    setInterval(updateTimer, 1000);
+</script>
+</body>
+</html>
